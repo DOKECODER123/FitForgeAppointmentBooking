@@ -41,6 +41,7 @@ A full-stack web application for managing gym appointments — built from scratc
 
 <img width="1918" height="907" alt="image" src="https://github.com/user-attachments/assets/00024022-4bca-4171-8d75-edcdc38530e1" />
 <img width="1918" height="907" alt="image" src="https://github.com/user-attachments/assets/739bf7ef-fc54-4ae0-b2af-c2241363a354" />
+<img width="1918" height="910" alt="image" src="https://github.com/user-attachments/assets/df5ea14f-dea9-4ccd-8c98-fd5fe0f8327d" />
 <img width="1915" height="902" alt="image" src="https://github.com/user-attachments/assets/a6379b9e-55de-4495-94c2-25099db9a466" />
 
 
