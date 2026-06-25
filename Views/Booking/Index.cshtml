@@ -1,0 +1,103 @@
+﻿@model AppointmentBooking.Models.Appointment
+
+<div style="max-width:540px; margin:60px auto; padding:0 20px;">
+    <div style="background:#2a2a2e; border:1px solid #3a3a3e; border-radius:16px; padding:36px;">
+
+        <h3 style="color:#fff; font-weight:800; margin-bottom:6px;">💪 Book a session</h3>
+        <p style="color:#888; font-size:14px; margin-bottom:28px;">Fill in your details and we'll lock in your spot.</p>
+
+        @if (ViewBag.Error != null)
+        {
+            <div style="background:#3a1a1a; border:1px solid #ff4444; border-radius:8px; padding:12px 16px; margin-bottom:20px; color:#ff8888; font-size:14px;">
+                ⚠️ @ViewBag.Error
+            </div>
+        }
+
+        <form method="post">
+            <div style="margin-bottom:18px;">
+                <label style="display:block; color:#aaa; font-size:13px; margin-bottom:6px;">Your Name</label>
+                <input asp-for="ClientName" required style="width:100%; padding:10px 14px; background:#1c1c1e; border:1px solid #3a3a3e; border-radius:8px; color:#fff; font-size:14px;" />
+            </div>
+            <div style="margin-bottom:18px;">
+                <label style="display:block; color:#aaa; font-size:13px; margin-bottom:6px;">Email</label>
+                <input asp-for="Email" type="email" required style="width:100%; padding:10px 14px; background:#1c1c1e; border:1px solid #3a3a3e; border-radius:8px; color:#fff; font-size:14px;" />
+            </div>
+            <div style="margin-bottom:18px;">
+                <label style="display:block; color:#aaa; font-size:13px; margin-bottom:6px;">Phone (optional)</label>
+                <input asp-for="Phone" style="width:100%; padding:10px 14px; background:#1c1c1e; border:1px solid #3a3a3e; border-radius:8px; color:#fff; font-size:14px;" />
+            </div>
+            <div style="margin-bottom:18px;">
+                <label style="display:block; color:#aaa; font-size:13px; margin-bottom:6px;">Session type</label>
+                <select asp-for="ServiceType" style="width:100%; padding:10px 14px; background:#1c1c1e; border:1px solid #3a3a3e; border-radius:8px; color:#fff; font-size:14px;">
+                    <option>Inquiry</option>
+                    <option>Workout session</option>
+                    <option>Assessment</option>
+                </select>
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:12px;">
+                <div>
+                    <label style="display:block; color:#aaa; font-size:13px; margin-bottom:6px;">Date</label>
+                    <input asp-for="AppointmentDate" type="date" id="dateInput" required
+                           style="width:100%; padding:10px 14px; background:#1c1c1e; border:1px solid #3a3a3e; border-radius:8px; color:#fff; font-size:14px;" />
+                </div>
+                <div>
+                    <label style="display:block; color:#aaa; font-size:13px; margin-bottom:6px;">Time</label>
+                    <input asp-for="AppointmentTime" type="time" required
+                           style="width:100%; padding:10px 14px; background:#1c1c1e; border:1px solid #3a3a3e; border-radius:8px; color:#fff; font-size:14px;" />
+                </div>
+            </div>
+
+            <!-- SLOTS INDICATOR -->
+            <div id="slotsBox" style="display:none; margin-bottom:18px; padding:12px 16px; border-radius:8px; font-size:13px; font-weight:600;">
+                <span id="slotsText"></span>
+            </div>
+
+            <button type="submit" id="submitBtn" style="width:100%; padding:13px; background:#ff8c42; color:#fff; border:none; border-radius:10px; font-size:16px; font-weight:700; cursor:pointer; margin-top:8px;">
+                Book now →
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+    const dateInput = document.getElementById('dateInput');
+    const slotsBox  = document.getElementById('slotsBox');
+    const slotsText = document.getElementById('slotsText');
+    const submitBtn = document.getElementById('submitBtn');
+
+    dateInput.addEventListener('change', function () {
+        const date = this.value;
+        if (!date) return;
+
+        fetch('/Booking/GetSlots?date=' + date)
+            .then(r => r.json())
+            .then(data => {
+                slotsBox.style.display = 'block';
+                if (data.full) {
+                    slotsBox.style.background = '#3a1a1a';
+                    slotsBox.style.border = '1px solid #ff4444';
+                    slotsBox.style.color = '#ff8888';
+                    slotsText.textContent = '❌ Fully booked — please choose another date.';
+                    submitBtn.disabled = true;
+                    submitBtn.style.opacity = '0.4';
+                    submitBtn.style.cursor = 'not-allowed';
+                } else if (data.remaining <= 3) {
+                    slotsBox.style.background = '#2e2010';
+                    slotsBox.style.border = '1px solid #ff8c42';
+                    slotsBox.style.color = '#ff8c42';
+                    slotsText.textContent = '⚠️ Only ' + data.remaining + ' slot(s) left for this date — book fast!';
+                    submitBtn.disabled = false;
+                    submitBtn.style.opacity = '1';
+                    submitBtn.style.cursor = 'pointer';
+                } else {
+                    slotsBox.style.background = '#0f2e20';
+                    slotsBox.style.border = '1px solid #2dd4bf';
+                    slotsBox.style.color = '#2dd4bf';
+                    slotsText.textContent = '✅ ' + data.remaining + ' of ' + data.maxSlots + ' slots available for this date.';
+                    submitBtn.disabled = false;
+                    submitBtn.style.opacity = '1';
+                    submitBtn.style.cursor = 'pointer';
+                }
+            });
+    });
+</script>

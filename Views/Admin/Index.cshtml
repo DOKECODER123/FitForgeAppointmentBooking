@@ -1,0 +1,145 @@
+﻿@model List<AppointmentBooking.Models.Appointment>
+
+<div style="padding:32px 0;">
+
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:32px; flex-wrap:wrap; gap:12px;">
+        <div>
+            <h2 style="color:#fff; font-weight:900; margin:0;">💪 FitForge Admin</h2>
+            <p style="color:#888; font-size:14px; margin:4px 0 0;">Manage all gym appointments</p>
+        </div>
+        <a href="/Auth/Logout" style="background:transparent; color:#ff4444; border:1px solid #ff4444; padding:9px 20px; border-radius:8px; font-size:13px; font-weight:700; text-decoration:none;">Logout</a>
+    </div>
+
+    <!-- STATS CARDS -->
+    <div style="display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-bottom:32px;">
+        <div style="background:#2a2a2e; border:1px solid #3a3a3e; border-radius:12px; padding:20px; text-align:center;">
+            <div style="font-size:28px; font-weight:900; color:#fff;">@ViewBag.Total</div>
+            <div style="font-size:12px; color:#888; margin-top:4px;">Total</div>
+        </div>
+        <div style="background:#2a2a2e; border:1px solid #3a3a3e; border-radius:12px; padding:20px; text-align:center;">
+            <div style="font-size:28px; font-weight:900; color:#ff8c42;">@ViewBag.Today</div>
+            <div style="font-size:12px; color:#888; margin-top:4px;">Today</div>
+        </div>
+        <div style="background:#2a2a2e; border:1px solid #3a3a3e; border-radius:12px; padding:20px; text-align:center;">
+            <div style="font-size:28px; font-weight:900; color:#facc15;">@ViewBag.Pending</div>
+            <div style="font-size:12px; color:#888; margin-top:4px;">Pending</div>
+        </div>
+        <div style="background:#2a2a2e; border:1px solid #3a3a3e; border-radius:12px; padding:20px; text-align:center;">
+            <div style="font-size:28px; font-weight:900; color:#2dd4bf;">@ViewBag.Confirmed</div>
+            <div style="font-size:12px; color:#888; margin-top:4px;">Confirmed</div>
+        </div>
+        <div style="background:#2a2a2e; border:1px solid #3a3a3e; border-radius:12px; padding:20px; text-align:center;">
+            <div style="font-size:28px; font-weight:900; color:#ff4444;">@ViewBag.Cancelled</div>
+            <div style="font-size:12px; color:#888; margin-top:4px;">Cancelled</div>
+        </div>
+    </div>
+
+    <!-- SERVICE BREAKDOWN -->
+    @if (ViewBag.ServiceData != null)
+    {
+        var svc = (Dictionary<string, int>)ViewBag.ServiceData;
+        int total = svc.Values.Sum();
+        <div style="background:#2a2a2e; border:1px solid #3a3a3e; border-radius:12px; padding:24px; margin-bottom:28px;">
+            <h5 style="color:#fff; font-weight:700; margin:0 0 16px;">Bookings by session type</h5>
+            <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px;">
+                @foreach (var s in svc)
+                {
+                    var pct = total > 0 ? (int)Math.Round((double)s.Value / total * 100) : 0;
+                    <div style="background:#1c1c1e; border-radius:8px; padding:16px;">
+                        <div style="font-size:13px; color:#aaa; margin-bottom:6px;">@s.Key</div>
+                        <div style="font-size:22px; font-weight:800; color:#ff8c42;">@s.Value</div>
+                        <div style="background:#3a3a3e; border-radius:4px; height:4px; margin-top:8px;">
+                            <div style="background:#ff8c42; width:@(pct)%; height:4px; border-radius:4px;"></div>
+                        </div>
+                        <div style="font-size:11px; color:#666; margin-top:4px;">@(pct)% of total</div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
+    <!-- SEARCH + FILTER -->
+    <form method="get" style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:20px;">
+        <input type="text" name="search" value="@ViewBag.Search" placeholder="Search name or email..."
+               style="flex:1; min-width:200px; padding:9px 14px; background:#1c1c1e; border:1px solid #3a3a3e; border-radius:8px; color:#fff; font-size:13px;" />
+        <select name="status" style="padding:9px 14px; background:#1c1c1e; border:1px solid #3a3a3e; border-radius:8px; color:#fff; font-size:13px;">
+            <option value="">All statuses</option>
+            <option value="Pending" selected="@(ViewBag.StatusFilter == "Pending" ? "selected" : null)">Pending</option>
+            <option value="Confirmed" selected="@(ViewBag.StatusFilter == "Confirmed" ? "selected" : null)">Confirmed</option>
+            <option value="Cancelled" selected="@(ViewBag.StatusFilter == "Cancelled" ? "selected" : null)">Cancelled</option>
+        </select>
+        <select name="service" style="padding:9px 14px; background:#1c1c1e; border:1px solid #3a3a3e; border-radius:8px; color:#fff; font-size:13px;">
+            <option value="">All session types</option>
+            <option value="Inquiry" selected="@(ViewBag.ServiceFilter == "Inquiry" ? "selected" : null)">Inquiry</option>
+            <option value="Workout session" selected="@(ViewBag.ServiceFilter == "Workout session" ? "selected" : null)">Workout session</option>
+            <option value="Assessment" selected="@(ViewBag.ServiceFilter == "Assessment" ? "selected" : null)">Assessment</option>
+        </select>
+        <button type="submit" style="padding:9px 20px; background:#ff8c42; color:#fff; border:none; border-radius:8px; font-size:13px; font-weight:700; cursor:pointer;">Filter</button>
+        <a href="/Admin" style="padding:9px 16px; background:#3a3a3e; color:#aaa; border-radius:8px; font-size:13px; text-decoration:none;">Clear</a>
+    </form>
+
+    <!-- TABLE -->
+    <div style="background:#2a2a2e; border:1px solid #3a3a3e; border-radius:12px; overflow:hidden;">
+        <table style="width:100%; border-collapse:collapse; font-size:13px;">
+            <thead>
+                <tr style="background:#1c1c1e; border-bottom:1px solid #3a3a3e;">
+                    <th style="padding:14px 16px; color:#888; text-align:left; font-weight:600;">Client</th>
+                    <th style="padding:14px 16px; color:#888; text-align:left; font-weight:600;">Session</th>
+                    <th style="padding:14px 16px; color:#888; text-align:left; font-weight:600;">Date</th>
+                    <th style="padding:14px 16px; color:#888; text-align:left; font-weight:600;">Time</th>
+                    <th style="padding:14px 16px; color:#888; text-align:left; font-weight:600;">Status</th>
+                    <th style="padding:14px 16px; color:#888; text-align:left; font-weight:600;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var a in Model)
+                {
+                    var isToday = a.AppointmentDate == DateOnly.FromDateTime(DateTime.Today);
+                    <tr style="border-bottom:1px solid #3a3a3e; @(isToday ? "background:#1e1a10;" : "")">
+                        <td style="padding:14px 16px;">
+                            <div style="color:#fff; font-weight:600;">@a.ClientName @(isToday ? "🔥" : "")</div>
+                            <div style="color:#666; font-size:12px;">@a.Email</div>
+                        </td>
+                        <td style="padding:14px 16px; color:#aaa;">@a.ServiceType</td>
+                        <td style="padding:14px 16px; color:#aaa;">@a.AppointmentDate.ToString("MMM dd, yyyy")</td>
+                        <td style="padding:14px 16px; color:#aaa;">@a.AppointmentTime.ToString("hh:mm tt")</td>
+                        <td style="padding:14px 16px;">
+                            @if (a.Status == "Confirmed")
+                            {
+                                <span style="background:#0f2e20; color:#2dd4bf; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:700;">Confirmed</span>
+                            }
+                            else if (a.Status == "Cancelled")
+                            {
+                                <span style="background:#2e0f0f; color:#ff4444; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:700;">Cancelled</span>
+                            }
+                            else
+                            {
+                                <span style="background:#2e2010; color:#ff8c42; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:700;">Pending</span>
+                            }
+                        </td>
+                        <td style="padding:14px 16px;">
+                            <form method="post" action="/Admin/UpdateStatus" style="display:flex; gap:6px;">
+                                <input type="hidden" name="id" value="@a.Id" />
+                                <button name="status" value="Confirmed"
+                                        style="padding:6px 14px; background:#0f2e20; color:#2dd4bf; border:1px solid #2dd4bf; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer;">
+                                    Confirm
+                                </button>
+                                <button name="status" value="Cancelled"
+                                        style="padding:6px 14px; background:#2e0f0f; color:#ff4444; border:1px solid #ff4444; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer;">
+                                    Cancel
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="6" style="padding:40px; text-align:center; color:#555;">No appointments found.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>

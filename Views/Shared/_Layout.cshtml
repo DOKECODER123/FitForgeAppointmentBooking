@@ -1,0 +1,161 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - BookEase</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: #1c1c1e;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        /* NAVBAR */
+        .navbar-sunset {
+            background: #111113;
+            border-bottom: 1px solid #2a2a2e;
+            padding: 14px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .navbar-brand-sunset {
+            font-size: 20px;
+            font-weight: 800;
+            color: #ff8c42;
+            text-decoration: none;
+        }
+        .navbar-brand-sunset:hover { color: #ff8c42; }
+        .nav-links-sunset {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+            align-items: center;
+        }
+        .nav-links-sunset a {
+            color: #aaa;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color .15s;
+        }
+        .nav-links-sunset a:hover { color: #fff; }
+        .nav-cta-sunset {
+            background: #ff8c42;
+            color: #fff;
+            border: none;
+            padding: 9px 22px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: opacity .15s;
+        }
+        .nav-cta-sunset:hover { opacity: .88; color: #fff; }
+
+        /* PAGE WRAPPER */
+        .page-wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+        }
+
+        /* FOOTER */
+        .footer-sunset {
+            background: #111113;
+            border-top: 1px solid #2a2a2e;
+            padding: 56px 0 28px;
+            margin-top: 80px;
+        }
+        .footer-sunset h5 { color: #ff8c42; font-weight: 800; margin-bottom: 14px; }
+        .footer-sunset h6 { color: #fff; font-weight: 700; margin-bottom: 14px; }
+        .footer-sunset p, .footer-sunset li { font-size: 14px; color: #888; line-height: 2; }
+        .footer-sunset a { color: #aaa; text-decoration: none; }
+        .footer-sunset a:hover { color: #ff8c42; }
+        .footer-bottom {
+            border-top: 1px solid #2a2a2e;
+            padding-top: 20px;
+            margin-top: 32px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .footer-bottom p { font-size: 13px; color: #555; margin: 0; }
+
+        /* GLOBAL CARD */
+        .sunset-card {
+            background: #2a2a2e;
+            border: 1px solid #3a3a3e;
+            border-radius: 14px;
+            padding: 28px;
+        }
+
+        /* BADGE */
+        .badge-orange { background: #ff8c42; color: #fff; }
+        .badge-teal   { background: #2dd4bf; color: #0f2e2b; }
+        .badge-muted  { background: #3a3a3e; color: #aaa; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar-sunset">
+    <a class="navbar-brand-sunset" href="/">💪 FitForge</a>
+    <ul class="nav-links-sunset">
+        <li><a href="/">Home</a></li>
+        <li><a href="/Booking">Book appointment</a></li>
+        <li><a href="/Auth/Login">Admin</a></li>
+    </ul>
+    <a href="/Booking" class="nav-cta-sunset">Book now</a>
+</nav>
+
+<div class="page-wrapper">
+    @RenderBody()
+</div>
+
+<footer class="footer-sunset">
+    <div class="container">
+        <div class="row g-4 mb-2">
+            <div class="col-md-4">
+                <h5>📅 BookEase</h5>
+                <p>Simple, fast appointment booking for small businesses. No hassle, no phone tag.</p>
+            </div>
+            <div class="col-md-4">
+                <h6>Quick links</h6>
+                <ul class="list-unstyled">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/Booking">Book appointment</a></li>
+                    <li><a href="/Auth/Login">Admin login</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h6>Contact us</h6>
+                <ul class="list-unstyled">
+                    <li>📍 123 Rizal Avenue, Quezon City</li>
+                    <li>📞 +63 917 123 4567</li>
+                    <li>📧 hello@bookease.ph</li>
+                    <li>🕐 Mon–Sat, 8:00 AM – 6:00 PM</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 BookEase. All rights reserved.</p>
+            <p>Built with ASP.NET Core</p>
+        </div>
+    </div>
+</footer>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
