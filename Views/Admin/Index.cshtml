@@ -118,17 +118,27 @@
                             }
                         </td>
                         <td style="padding:14px 16px;">
-                            <form method="post" action="/Admin/UpdateStatus" style="display:flex; gap:6px;">
-                                <input type="hidden" name="id" value="@a.Id" />
-                                <button name="status" value="Confirmed"
-                                        style="padding:6px 14px; background:#0f2e20; color:#2dd4bf; border:1px solid #2dd4bf; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer;">
-                                    Confirm
-                                </button>
-                                <button name="status" value="Cancelled"
-                                        style="padding:6px 14px; background:#2e0f0f; color:#ff4444; border:1px solid #ff4444; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer;">
-                                    Cancel
-                                </button>
-                            </form>
+                            <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                                <form method="post" action="/Admin/UpdateStatus" style="display:flex; gap:6px;">
+                                    <input type="hidden" name="id" value="@a.Id" />
+                                    <button name="status" value="Confirmed"
+                                            style="padding:6px 14px; background:#0f2e20; color:#2dd4bf; border:1px solid #2dd4bf; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer;">
+                                        Confirm
+                                    </button>
+                                    <button name="status" value="Cancelled"
+                                            style="padding:6px 14px; background:#2e0f0f; color:#ff4444; border:1px solid #ff4444; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer;">
+                                        Cancel
+                                    </button>
+                                </form>
+                                <form method="post" action="/Admin/Delete"
+                                      onsubmit="return confirm('Delete this booking permanently? This cannot be undone.');">
+                                    <input type="hidden" name="id" value="@a.Id" />
+                                    <button type="submit"
+                                            style="padding:6px 14px; background:#1c1c1e; color:#888; border:1px solid #3a3a3e; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer;">
+                                        🗑️ Delete
+                                    </button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                 }

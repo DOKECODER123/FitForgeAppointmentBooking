@@ -105,4 +105,18 @@ public class AdminController : Controller
 
         return RedirectToAction("Index");
     }
+
+    [HttpPost]
+    public IActionResult Delete(int id)
+    {
+        if (!IsAdmin()) return RedirectToAction("Login", "Auth");
+
+        using var con = new SqlConnection(_conn);
+        con.Open();
+        using var cmd = new SqlCommand("DELETE FROM Appointments WHERE Id=@id", con);
+        cmd.Parameters.AddWithValue("@id", id);
+        cmd.ExecuteNonQuery();
+
+        return RedirectToAction("Index");
+    }
 }
