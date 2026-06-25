@@ -2,7 +2,7 @@
 
 A full-stack web application for managing gym appointments — built from scratch with ASP.NET Core MVC and SQL Server. Clients can book sessions in real time, and gym staff can manage bookings through a secure admin dashboard with live analytics.
 
-> 🔗 **Live demo:** _add your deployed link here_
+> 🔗 **Live demo:** _add your deployed link here( deploying soon!)_
 > 📂 **Tech stack:** ASP.NET Core MVC · SQL Server · MailKit · Bootstrap
 
 ---
