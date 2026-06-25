@@ -39,7 +39,8 @@ A full-stack web application for managing gym appointments — built from scratc
 
 ## 📸 Screenshots
 
-> _Add 2–4 screenshots here: homepage, booking form, admin dashboard, login page._
+> <img width="1918" height="907" alt="image" src="https://github.com/user-attachments/assets/00024022-4bca-4171-8d75-edcdc38530e1" />
+
 
 ---
 
